@@ -2,10 +2,10 @@
   "_comment": "Used by lib/scorer.js to label each job with a role track. Pass 1 is a title keyword match. Pass 2 cross-checks with skill-keyword overlap; if they disagree, the job is flagged for manual review instead of a silent guess. This file is the only place CV file names live: the dashboard's Download CV button reads it. All tracks share one resume for now; give a track its own PDF any time by changing its resumeFile and putting that PDF in resumes/.",
 
   "infrastructure": {
-    "label": "Infrastructure",
+    "label": "Infra / DevOps / SRE",
     "resumeFile": "Mujeeb_Lawal-Saka_Software_Engineer.pdf",
-    "titleKeywords": ["infrastructure", "infra", "platform", "cloud", "systems engineer", "systems software"],
-    "skillKeywords": ["kubernetes", "terraform", "aws", "gcp", "azure", "docker", "linux", "networking", "distributed systems", "observability", "infrastructure as code"]
+    "titleKeywords": ["devops", "sre", "site reliability", "reliability", "production engineer", "infrastructure", "infra", "platform", "cloud", "systems engineer", "systems software"],
+    "skillKeywords": ["kubernetes", "terraform", "aws", "gcp", "azure", "docker", "linux", "networking", "distributed systems", "observability", "infrastructure as code", "ci/cd", "incident", "on-call", "prometheus", "opentelemetry"]
   },
 
   "backend": {
@@ -23,5 +23,5 @@
     "isDefault": true
   },
 
-  "notes": "fullstack is the default track (general software engineer roles). Titles are checked in order: infrastructure, then backend, then fullstack, so 'Platform Engineer' is Infrastructure and 'Python Software Engineer' is Backend."
+  "notes": "fullstack is the default track (general software engineer roles). Titles are checked in order: infrastructure, then backend, then fullstack, so 'Junior SRE' and 'Platform Engineer' are Infra / DevOps / SRE and 'Python Software Engineer' is Backend."
 }

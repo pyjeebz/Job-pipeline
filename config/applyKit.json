@@ -37,7 +37,7 @@
   ],
 
   "summaries": {
-    "infrastructure": "Recent graduate with two years of production engineering at DGR Inc., where I resolved 100+ production issues using metrics, logs and traces (cutting MTTR by 35%) and built Python and Terraform CI/CD integrations that cut release times by 70%. I built statewatch, an open-source drift detector that compares live GCP state with Terraform state and fails CI on critical drift.",
+    "infrastructure": "Recent graduate with two years of production engineering at DGR Inc., where I resolved 100+ production issues using metrics, logs and traces (cutting MTTR by 35%) and built Python and Terraform CI/CD integrations that cut release times by 70%. On my own I built statewatch, a drift detector that compares live GCP state with Terraform state and fails CI on critical drift, and PreScale, which finds saturation and latency regressions under load and gates CI on capacity thresholds.",
     "backend": "Recent graduate who builds backend services in Go and Python. At DGR Inc. I built Python backend services and internal deployment tooling for production systems; on my own I built Toss, a real-time Go service on an event-driven SSE architecture with AES-GCM encryption, rate limiting and reconnect with state recovery, used by 50+ people.",
     "fullstack": "Recent graduate who ships across the stack in Go, Python and TypeScript. As a freelance engineer I own a client's booking platform end to end in React and Next.js, raised booking conversion from 1.5% to 4.2%, and integrated the ElevenLabs API to add a voice AI feature that grew sales by 50%."
   }

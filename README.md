@@ -17,7 +17,7 @@ GitHub Actions (7am Toronto daily) -> scripts/run-pipeline.mjs
    2. lib/filters.js     keep Canada (remote or onsite), remote US and
                          worldwide jobs; boost Canada; drop duplicates
    3. lib/scorer.js      score each job (entry level, <= 3 years asked),
-                         tag its track: Infrastructure, Backend, Full-stack
+                         tag its track: Infra/DevOps/SRE, Backend, Full-stack
    4. lib/sheets.js      write the best new matches to the sheet
    5. approvals          strong matches go straight to Needs Manual Apply
    6. lib/mailer.js      follow-up reminders and a daily digest (optional,
@@ -44,8 +44,9 @@ ever submitted for you: you apply on each posting yourself.
   Senior, staff, lead, principal, III/3+, and internship/co-op titles drop
   out, and so does any posting that asks for more than 3 years
   (`MAX_YEARS` in `lib/scorer.js`).
-- **Roles:** infrastructure/platform/cloud, backend/Python, full-stack and
-  general software engineering. DevOps, SRE and security titles drop out.
+- **Roles:** infrastructure, platform, cloud, DevOps, SRE and production
+  engineering; backend/Python; full-stack and general software engineering.
+  Security engineering titles drop out.
 - **Where:** Canada (remote or onsite, +10 score), remote US (flagged to
   check work authorization), and remote worldwide or North America.
 

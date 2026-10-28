@@ -28,6 +28,10 @@ test("the roles you are targeting pass the minimum score", () => {
     "Software Engineer I",
     "Infrastructure Engineer",
     "Cloud Platform Engineer",
+    "Junior DevOps Engineer",
+    "Site Reliability Engineer I",
+    "SRE, New Grad",
+    "Production Engineer",
     "Full-stack Developer",
     "Software Engineer",
   ]) {
@@ -46,8 +50,8 @@ test("jobs that are not a fit fall below the minimum score", () => {
     "Security Engineer, Application Security",
     "Associate Technical Services Engineer",
     "Lead Infrastructure Engineer",
-    "DevOps Engineer",
-    "Site Reliability Engineer",
+    "Senior DevOps Engineer",
+    "Staff Site Reliability Engineer",
     "Software Engineering Intern",
     ".NET Developer",
     "Java Engineer",
@@ -71,6 +75,19 @@ test("postings asking for more than 3 years drop out", () => {
   assert.ok(computeMatchScore(asks(3)) >= MINIMUM);
   assert.ok(computeMatchScore(asks(4)) < MINIMUM);
   assert.ok(computeMatchScore(asks(7)) < MINIMUM);
+});
+
+test("a Canadian bonus cannot lift a too-senior job back in", () => {
+  const canada = { locationBonus: 10 };
+  assert.ok(
+    computeMatchScore(
+      job("Site Reliability Engineer", {
+        ...canada,
+        description: `${skills} 5+ years of experience running production systems.`,
+      }),
+    ) < MINIMUM,
+  );
+  assert.ok(computeMatchScore(job("Senior Backend Engineer", canada)) < MINIMUM);
 });
 
 test("requiredYears reads the largest experience requirement", () => {
@@ -107,6 +124,8 @@ test("jobs in Canada get the location bonus", () => {
 test("the title decides which CV is used", () => {
   assert.equal(pickCvVersion(job("Infrastructure Engineer")).cvKey, "infrastructure");
   assert.equal(pickCvVersion(job("Platform Engineer")).cvKey, "infrastructure");
+  assert.equal(pickCvVersion(job("Junior DevOps Engineer")).cvKey, "infrastructure");
+  assert.equal(pickCvVersion(job("Production Engineer")).cvKey, "infrastructure");
   assert.equal(pickCvVersion(job("Python Backend Developer")).cvKey, "backend");
   assert.equal(pickCvVersion(job("Full Stack Developer")).cvKey, "fullstack");
   assert.equal(pickCvVersion(job("Software Engineer")).cvKey, "fullstack");
