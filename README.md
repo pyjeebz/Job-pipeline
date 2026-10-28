@@ -67,7 +67,7 @@ ever submitted for you: you apply on each posting yourself.
 | `countries.json` | Where you can work: Canada (remote or onsite, +10 score), US (remote only).    |
 | `companies.json` | Company names checked on Greenhouse, Lever, Ashby, BambooHR.                   |
 | `cvMapping.json` | Role tracks, their keywords, and the resume file each one downloads.           |
-| `applyKit.json`  | Your details and saved answers for the Apply kit. Replace the `EDIT ME` lines. |
+| `applyKit.json`  | Public template for the Apply kit. Your real answers go in `applyKit.local.json` (git-ignored, read first). |
 
 ### `app/`
 
@@ -192,8 +192,9 @@ commit. If the digest stops, re-enable the workflow on the Actions tab.
   `git check-ignore -v .env.local credentials/keys.json`.
 - The dashboard login uses Basic Auth, which is readable on plain `http://`.
   Use the SSH tunnel or HTTPS.
-- `config/applyKit.json` holds your saved answers. Do not commit a real salary
-  number to a public repo.
+- Your real Apply kit answers (salary, work permit) live in
+  `config/applyKit.local.json`, which is git-ignored. Keep them out of
+  `config/applyKit.json`, which is public.
 - Rotate the service account key, app password, and `CRON_SECRET` if they are
   ever pasted somewhere public.
 

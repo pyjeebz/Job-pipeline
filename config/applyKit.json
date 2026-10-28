@@ -1,5 +1,5 @@
 {
-  "_comment": "Everything the dashboard's Apply kit lets you copy. Edit any value, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders: replace them with your real answer. This repo is public: anything you put here is visible to anyone, so keep salary numbers and your phone number out of commits.",
+  "_comment": "Public template for the dashboard's Apply kit. Your real answers live in config/applyKit.local.json (git-ignored, same format), which the dashboard reads instead of this file when it exists. Edit that file, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders.",
 
   "profile": [
     { "label": "Full name", "value": "Mujeeb Lawal-Saka" },

@@ -25,3 +25,6 @@ Thumbs.db
 znotes.md
 # CVs: personal, kept out of the public repo
 resumes/*.pdf
+
+# Your filled-in Apply kit (salary, work permit): kept off the public repo
+config/applyKit.local.json
