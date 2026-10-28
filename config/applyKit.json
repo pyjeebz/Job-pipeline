@@ -12,7 +12,7 @@
   "answers": [
     {
       "label": "Where are you based?",
-      "value": "EDIT ME: city, province, Canada (time zone). Open to remote, hybrid or onsite in Canada, and remote roles in the US."
+      "value": "Ontario, Canada (Eastern Time). Open to remote, hybrid or onsite roles in Canada, and remote roles in the US."
     },
     {
       "label": "Work authorization",
@@ -20,7 +20,7 @@
     },
     {
       "label": "Availability / start date",
-      "value": "EDIT ME: e.g. Immediately / two weeks' notice"
+      "value": "Immediately"
     },
     {
       "label": "Salary expectation",
@@ -28,17 +28,17 @@
     },
     {
       "label": "Years of experience",
-      "value": "EDIT ME: e.g. New grad (B.Sc. Computer Science, 2026) with internship and project experience in Python, AWS and Kubernetes."
+      "value": "Recent graduate (Diploma in Computer Networking, St. Clair College, 2025) with about 2 years as a software engineering co-op and part-time engineer at DGR Inc., plus freelance full-stack work since January 2026."
     },
     {
       "label": "Full-time or contract?",
-      "value": "EDIT ME: e.g. Looking for full-time new grad or entry-level roles."
+      "value": "Looking for full-time new grad or entry-level roles; open to contract."
     }
   ],
 
   "summaries": {
-    "infrastructure": "EDIT ME: 2-3 sentences for infrastructure / platform / cloud roles (projects, internships, AWS, Kubernetes, Linux).",
-    "backend": "EDIT ME: 2-3 sentences for Backend / Python roles (services and APIs you built, stack).",
-    "fullstack": "EDIT ME: 2-3 sentences for full-stack and general software engineer roles."
+    "infrastructure": "Recent graduate with two years of production engineering at DGR Inc., where I resolved 100+ production issues using metrics, logs and traces (cutting MTTR by 35%) and built Python and Terraform CI/CD integrations that cut release times by 70%. I built statewatch, an open-source drift detector that compares live GCP state with Terraform state and fails CI on critical drift.",
+    "backend": "Recent graduate who builds backend services in Go and Python. At DGR Inc. I built Python backend services and internal deployment tooling for production systems; on my own I built Toss, a real-time Go service on an event-driven SSE architecture with AES-GCM encryption, rate limiting and reconnect with state recovery, used by 50+ people.",
+    "fullstack": "Recent graduate who ships across the stack in Go, Python and TypeScript. As a freelance engineer I own a client's booking platform end to end in React and Next.js, raised booking conversion from 1.5% to 4.2%, and integrated the ElevenLabs API to add a voice AI feature that grew sales by 50%."
   }
 }

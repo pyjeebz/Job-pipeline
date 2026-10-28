@@ -3,21 +3,21 @@
 
   "infrastructure": {
     "label": "Infrastructure",
-    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
+    "resumeFile": "Mujeeb_Lawal-Saka_Software_Engineer.pdf",
     "titleKeywords": ["infrastructure", "infra", "platform", "cloud", "systems engineer", "systems software"],
     "skillKeywords": ["kubernetes", "terraform", "aws", "gcp", "azure", "docker", "linux", "networking", "distributed systems", "observability", "infrastructure as code"]
   },
 
   "backend": {
     "label": "Backend",
-    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
+    "resumeFile": "Mujeeb_Lawal-Saka_Software_Engineer.pdf",
     "titleKeywords": ["backend", "back-end", "back end", "python", "golang", "api engineer", "server-side"],
     "skillKeywords": ["python", "django", "fastapi", "flask", "golang", "postgresql", "redis", "kafka", "microservices", "rest api", "grpc"]
   },
 
   "fullstack": {
     "label": "Full-stack / SWE",
-    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
+    "resumeFile": "Mujeeb_Lawal-Saka_Software_Engineer.pdf",
     "titleKeywords": ["full stack", "full-stack", "fullstack", "product engineer", "software engineer", "software developer"],
     "skillKeywords": ["react", "next.js", "typescript", "node.js", "full stack", "end to end", "frontend"],
     "isDefault": true
