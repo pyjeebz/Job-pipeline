@@ -1,4 +1,4 @@
-# Runs the job pipeline every morning: fetch -> filter -> score -> Google
+# Runs the job pipeline twice a day: fetch -> filter -> score -> Google
 # Sheet. Replaces the old VPS cron job. Settings come from repository
 # secrets and variables (Settings > Secrets and variables > Actions); see
 # README "Daily run on GitHub Actions". The SMTP secrets are optional: set
@@ -7,9 +7,10 @@ name: Daily pipeline
 
 on:
   schedule:
-    # 12:00 UTC = 7:00 Toronto (EST) / 8:00 (EDT). GitHub may start it a few
+    # 13:00 and 21:00 UTC = 8 AM and 4 PM Toronto in winter (EST), 9 AM and
+    # 5 PM in summer (EDT). GitHub schedules are UTC only and may start a few
     # minutes late.
-    - cron: "0 12 * * *"
+    - cron: "0 13,21 * * *"
   workflow_dispatch: {}
 
 concurrency:

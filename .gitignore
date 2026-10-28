@@ -28,3 +28,9 @@ resumes/*.pdf
 
 # Your filled-in Apply kit (salary, work permit): kept off the public repo
 config/applyKit.local.json
+
+# Service account keys and other JSON dropped in the repo root. Only the
+# package files are real project files here; keys belong in credentials/.
+/*.json
+!/package.json
+!/package-lock.json

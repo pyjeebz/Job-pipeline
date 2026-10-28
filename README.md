@@ -11,7 +11,7 @@ Forked from [0xDaniiel/Job-pipeline](https://github.com/0xDaniiel/Job-pipeline).
 ## How it works
 
 ```
-GitHub Actions (7am Toronto daily) -> scripts/run-pipeline.mjs
+GitHub Actions (8am + 4pm Toronto) -> scripts/run-pipeline.mjs
                          |
    1. lib/fetchers/      pull jobs from 8 sources
    2. lib/filters.js     keep Canada (remote or onsite), remote US and
@@ -154,8 +154,9 @@ Restart `npm run dev` after changing the list, because the fetchers read it at s
 
 ## Daily run on GitHub Actions
 
-`.github/workflows/daily-pipeline.yml` runs the pipeline at 12:00 UTC
-(7am Toronto in winter, 8am in summer). One-time setup:
+`.github/workflows/daily-pipeline.yml` runs the pipeline twice a day, at
+13:00 and 21:00 UTC (8am and 4pm Toronto in winter, 9am and 5pm in summer).
+Each run adds up to 50 new jobs. One-time setup:
 
 1. In the fork, open the **Actions** tab and click **I understand my
    workflows, go ahead and enable them**. Scheduled workflows stay off in a
