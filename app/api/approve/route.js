@@ -2,23 +2,12 @@
 // Updates a row's Status when you click a button on the dashboard.
 // Body: { row: 5, status: "Approved" }
 //
-// Clicking Approve acts immediately:
-//   - email job (Submission Method "Email" + address in Notes): the
-//     application is sent now, status becomes "Applied (Auto)" and a
-//     follow-up is set 7 days out. If sending fails, the row stays
-//     "Approved" and the next pipeline run retries it.
-//   - any other job (web form): moves straight to "Needs Manual Apply".
-// Marking a job Applied also sets a 7-day follow-up.
+// Clicking Approve moves the job straight to "Needs Manual Apply", your
+// queue of jobs to apply to on the posting. Marking a job Applied sets a
+// 7-day follow-up.
 
 import { NextResponse } from "next/server";
-import {
-  getAllJobs,
-  updateStatus,
-  setFollowUpDate,
-  STATUS,
-} from "../../../lib/sheets.js";
-import { sendApplication } from "../../../lib/autoApply.js";
-import { resumeFileFor } from "../../../lib/cvs.js";
+import { updateStatus, setFollowUpDate, STATUS } from "../../../lib/sheets.js";
 
 export const maxDuration = 30;
 const ALLOWED_STATUSES = new Set(Object.values(STATUS));
@@ -44,36 +33,8 @@ export async function POST(request) {
     const rowNumber = Number(row);
 
     if (status === STATUS.APPROVED) {
-      const all = await getAllJobs();
-      const job = all.find((j) => j._row === rowNumber);
-      const method = (job?.["Submission Method"] || "").trim().toLowerCase();
-      const emailMatch = (job?.Notes || "").match(
-        /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/,
-      );
-
-      if (job && method === "email" && emailMatch) {
-        const sent = await sendApplication(
-          {
-            title: job["Role Title"] || "",
-            company: job.Company || "",
-            cvKey: job["CV Version Used"],
-            resumeFile: resumeFileFor(job["CV Version Used"]),
-          },
-          emailMatch[0],
-        );
-        if (sent) {
-          await updateStatus(rowNumber, STATUS.APPLIED_AUTO);
-          await setFollowUpDate(rowNumber, 7);
-          return NextResponse.json({ success: true, sent: true });
-        }
-        // Sending failed: keep it Approved so the next run retries.
-        await updateStatus(rowNumber, STATUS.APPROVED);
-        return NextResponse.json({ success: true, sent: false });
-      }
-
-      // Web-form job: nothing to send, go straight to the manual queue.
       await updateStatus(rowNumber, STATUS.NEEDS_MANUAL);
-      return NextResponse.json({ success: true, sent: false });
+      return NextResponse.json({ success: true });
     }
 
     await updateStatus(rowNumber, status);

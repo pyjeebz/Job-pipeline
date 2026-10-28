@@ -301,11 +301,6 @@ a.actionBtn {
   text-decoration: none;
   display: inline-block;
 }
-.applyEmail {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
 .kitPanel {
   margin-top: 16px;
   padding: 18px;

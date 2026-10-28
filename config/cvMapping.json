@@ -1,27 +1,27 @@
 {
-  "_comment": "Used by lib/scorer.js to decide which resume to use for a job. Pass 1 is a title keyword match. Pass 2 cross-checks with skill-keyword overlap; if they disagree, the job is flagged for manual review instead of a silent guess. This file is the only place CV file names live: the pipeline, the Approve button and the dashboard all read it. Put the PDFs in resumes/ with exactly these names. Pointing two categories at the same file is fine.",
+  "_comment": "Used by lib/scorer.js to label each job with a role track. Pass 1 is a title keyword match. Pass 2 cross-checks with skill-keyword overlap; if they disagree, the job is flagged for manual review instead of a silent guess. This file is the only place CV file names live: the dashboard's Download CV button reads it. All tracks share one resume for now; give a track its own PDF any time by changing its resumeFile and putting that PDF in resumes/.",
 
-  "devops_cloud": {
-    "label": "DevOps / Cloud CV",
-    "resumeFile": "Mujeeb_Lawal_Saka_CV_DevOps_Cloud.pdf",
-    "titleKeywords": ["devops", "sre", "site reliability", "reliability", "cloud", "platform", "infrastructure", "kubernetes", "aws"],
-    "skillKeywords": ["kubernetes", "terraform", "aws", "gcp", "azure", "docker", "ci/cd", "github actions", "helm", "ansible", "prometheus", "grafana", "observability", "infrastructure as code"]
+  "infrastructure": {
+    "label": "Infrastructure",
+    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
+    "titleKeywords": ["infrastructure", "infra", "platform", "cloud", "systems engineer", "systems software"],
+    "skillKeywords": ["kubernetes", "terraform", "aws", "gcp", "azure", "docker", "linux", "networking", "distributed systems", "observability", "infrastructure as code"]
   },
 
   "backend": {
-    "label": "Backend CV",
-    "resumeFile": "Mujeeb_Lawal_Saka_CV_Backend.pdf",
-    "titleKeywords": ["backend", "back-end", "back end", "python", "golang", "api engineer", "server-side", "distributed systems"],
-    "skillKeywords": ["python", "django", "fastapi", "flask", "golang", "postgresql", "redis", "kafka", "microservices", "rest api", "grpc", "distributed systems"]
+    "label": "Backend",
+    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
+    "titleKeywords": ["backend", "back-end", "back end", "python", "golang", "api engineer", "server-side"],
+    "skillKeywords": ["python", "django", "fastapi", "flask", "golang", "postgresql", "redis", "kafka", "microservices", "rest api", "grpc"]
   },
 
   "fullstack": {
-    "label": "Full-stack CV",
-    "resumeFile": "Mujeeb_Lawal_Saka_CV_Fullstack.pdf",
+    "label": "Full-stack / SWE",
+    "resumeFile": "Mujeeb_Lawal_Saka_Resume.pdf",
     "titleKeywords": ["full stack", "full-stack", "fullstack", "product engineer", "software engineer", "software developer"],
     "skillKeywords": ["react", "next.js", "typescript", "node.js", "full stack", "end to end", "frontend"],
     "isDefault": true
   },
 
-  "notes": "fullstack is the default resume (general software engineer roles). Order matters for titles: devops_cloud is checked first, then backend, then fullstack, so 'Senior Platform Engineer' picks the DevOps CV and 'Python Software Engineer' picks the Backend CV."
+  "notes": "fullstack is the default track (general software engineer roles). Titles are checked in order: infrastructure, then backend, then fullstack, so 'Platform Engineer' is Infrastructure and 'Python Software Engineer' is Backend."
 }

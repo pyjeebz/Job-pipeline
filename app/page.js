@@ -37,15 +37,6 @@ const KIT_STATUSES = [
   "Needs Manual Apply",
   "Approved",
 ];
-const EMAIL_RE = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/;
-
-// The address an email-apply job will be sent to, or null for web-form jobs.
-function applyEmailOf(job) {
-  const method = (job["Submission Method"] || "").trim().toLowerCase();
-  if (method !== "email") return null;
-  const match = (job.Notes || "").match(EMAIL_RE);
-  return match ? match[0] : null;
-}
 
 function KitPanel({ job, kit, copied, onCopy }) {
   const labels = kit.cvLabels || {};
@@ -191,23 +182,8 @@ export default function Dashboard() {
     return data;
   }
 
-  // Approve sends the application right away for email jobs, so confirm first.
   async function approve(job) {
-    const email = applyEmailOf(job);
-    if (
-      email &&
-      !window.confirm(
-        `This sends your CV to ${email} right now and cannot be undone. Continue?`,
-      )
-    ) {
-      return;
-    }
-    const data = await updateStatus(job._row, "Approved");
-    if (email && data && data.sent === false) {
-      window.alert(
-        "The email could not be sent. The job stays Approved and the next run will retry. Check the email settings in .env.local.",
-      );
-    }
+    await updateStatus(job._row, "Approved");
   }
 
   async function clearAll() {
@@ -302,7 +278,6 @@ export default function Dashboard() {
       ) : (
         <div className="panel">
           {visible.map((job) => {
-            const applyEmail = applyEmailOf(job);
             const links = linkedinLinks(job.Company);
             const kitOpen = openKit === job._row;
             return (
@@ -352,11 +327,6 @@ export default function Dashboard() {
                       {job.Status}
                     </span>
                   </div>
-                  {applyEmail && (
-                    <div className="applyEmail">
-                      Applies by email to {applyEmail}
-                    </div>
-                  )}
                   <div className="liLinks">
                     <a
                       href={links.company}

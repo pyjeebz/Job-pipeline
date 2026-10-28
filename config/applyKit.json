@@ -1,5 +1,5 @@
 {
-  "_comment": "Everything the dashboard's Apply kit lets you copy. Edit any value, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders: replace them with your real answer. The summaries are also used in application emails (an EDIT ME summary is left out of the email). This repo is public: anything you put here is visible to anyone, so keep salary numbers and your phone number out of commits.",
+  "_comment": "Everything the dashboard's Apply kit lets you copy. Edit any value, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders: replace them with your real answer. This repo is public: anything you put here is visible to anyone, so keep salary numbers and your phone number out of commits.",
 
   "profile": [
     { "label": "Full name", "value": "Mujeeb Lawal-Saka" },
@@ -28,17 +28,17 @@
     },
     {
       "label": "Years of experience",
-      "value": "EDIT ME: e.g. N years building backend services and cloud infrastructure with Python, AWS and Kubernetes."
+      "value": "EDIT ME: e.g. New grad (B.Sc. Computer Science, 2026) with internship and project experience in Python, AWS and Kubernetes."
     },
     {
       "label": "Full-time or contract?",
-      "value": "EDIT ME: e.g. Open to both full-time and long-term contract roles."
+      "value": "EDIT ME: e.g. Looking for full-time new grad or entry-level roles."
     }
   ],
 
   "summaries": {
-    "devops_cloud": "EDIT ME: 2-3 sentences for DevOps / Cloud / SRE roles (AWS, Kubernetes, Terraform, CI/CD, results you can measure).",
-    "backend": "EDIT ME: 2-3 sentences for Backend / Python roles (services and APIs you built, scale, stack).",
+    "infrastructure": "EDIT ME: 2-3 sentences for infrastructure / platform / cloud roles (projects, internships, AWS, Kubernetes, Linux).",
+    "backend": "EDIT ME: 2-3 sentences for Backend / Python roles (services and APIs you built, stack).",
     "fullstack": "EDIT ME: 2-3 sentences for full-stack and general software engineer roles."
   }
 }

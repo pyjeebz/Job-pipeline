@@ -1,12 +1,8 @@
 # Runs the job pipeline every morning: fetch -> filter -> score -> Google
-# Sheet -> follow-up reminders -> daily digest email. Replaces the old VPS
-# cron job. Settings come from repository secrets and variables
-# (Settings > Secrets and variables > Actions); see README "Daily run on
-# GitHub Actions".
-#
-# CV PDFs are git-ignored (the repo is public), so this run never sends an
-# application email itself: rows you Approve in the local dashboard are sent
-# from your machine. Anything left Approved is moved to Needs Manual Apply.
+# Sheet. Replaces the old VPS cron job. Settings come from repository
+# secrets and variables (Settings > Secrets and variables > Actions); see
+# README "Daily run on GitHub Actions". The SMTP secrets are optional: set
+# them only if you want the daily digest email.
 name: Daily pipeline
 
 on:
@@ -49,4 +45,3 @@ jobs:
           MINIMUM_MATCH_SCORE: ${{ vars.MINIMUM_MATCH_SCORE || '55' }}
           AUTO_APPROVE_MIN_SCORE: ${{ vars.AUTO_APPROVE_MIN_SCORE || '80' }}
           REQUIRE_REMOTE: ${{ vars.REQUIRE_REMOTE || 'false' }}
-          AUTO_SEND_EMAILS: "false"
