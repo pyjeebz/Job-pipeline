@@ -1,17 +1,21 @@
 # Job Pipeline
 
-A Next.js app that finds remote developer jobs every day, filters them by
-country, scores them against your three CVs, logs everything in a Google
-Sheet, and gives you a dashboard to approve and apply from. Built for Daniel
-Chimezie. Runs on your PC for testing and on a RackNerd VPS for the daily run.
+A Next.js app that finds backend, DevOps/cloud and full-stack jobs every day,
+keeps the ones you can take from Canada, scores them against your three CVs,
+logs everything in a Google Sheet, and gives you a dashboard to approve and
+apply from. Set up for Mujeeb Lawal-Saka. The daily run happens on GitHub
+Actions; the dashboard runs on your PC.
+
+Forked from [0xDaniiel/Job-pipeline](https://github.com/0xDaniiel/Job-pipeline).
 
 ## How it works
 
 ```
-cron (7am daily)  ->  POST /api/run
+GitHub Actions (7am Toronto daily) -> scripts/run-pipeline.mjs
                          |
-   1. lib/fetchers/      pull jobs from 9 sources
-   2. lib/filters.js     keep eligible countries, drop duplicates
+   1. lib/fetchers/      pull jobs from 8 sources
+   2. lib/filters.js     keep Canada (remote or onsite), remote US and
+                         worldwide jobs; boost Canada; drop duplicates
    3. lib/scorer.js      score each job, pick the right CV
    4. lib/sheets.js      write the best new matches to the sheet
    5. lib/emailApply.js  find application emails in descriptions
@@ -48,9 +52,9 @@ are ever submitted for you; web forms are always submitted by you.
 
 | File             | What it does                                                                   |
 | ---------------- | ------------------------------------------------------------------------------ |
-| `countries.json` | Countries where mid-level developer pay clears $28K a year.                    |
+| `countries.json` | Where you can work: Canada (remote or onsite, +10 score), US (remote only).    |
 | `companies.json` | Company names checked on Greenhouse, Lever, Ashby, BambooHR.                   |
-| `cvMapping.json` | Title and skill keywords that choose between your 3 CVs.                       |
+| `cvMapping.json` | Your CVs: file names, labels, and the keywords that choose between them.       |
 | `applyKit.json`  | Your details and saved answers for the Apply kit. Replace the `EDIT ME` lines. |
 
 ### `app/`
@@ -62,7 +66,7 @@ are ever submitted for you; web forms are always submitted by you.
 | `api/approve/route.js` | Approve and status changes. Sends email applications.           |
 | `api/jobs/route.js`    | Reads the sheet for the dashboard.                              |
 | `api/kit/route.js`     | Serves `applyKit.json` to the dashboard.                        |
-| `api/resume/route.js`  | Downloads one of the 3 CVs.                                     |
+| `api/resume/route.js`  | Downloads one of your CVs.                                      |
 | `api/clear/route.js`   | Clear all (only works when `ALLOW_CLEAR=true`).                 |
 | `api/format/route.js`  | One-time sheet styling. Run it once.                            |
 
@@ -78,6 +82,7 @@ are ever submitted for you; web forms are always submitted by you.
 | `mailer.js`     | Daily digest and follow-up emails.                             |
 | `autoApply.js`  | Sends one application email with the right CV attached.        |
 | `loadJson.js`   | Loads the config files.                                        |
+| `cvs.js`        | Reads `cvMapping.json` for every part that needs a CV.         |
 | `fetchers/`     | One file per job source, plus `index.js` that runs them all.   |
 
 ### `scripts/`
@@ -88,8 +93,9 @@ are ever submitted for you; web forms are always submitted by you.
 
 ### Other
 
-`resumes/` holds your 3 CV PDFs. `cron/` holds the scripts that call `/api/run`
-daily. `logs/` holds the daily run log.
+`resumes/` holds your CV PDFs (git-ignored, they stay on your PC).
+`.github/workflows/daily-pipeline.yml` is the daily run.
+`.github/workflows/test.yml` runs the tests on every push.
 
 ## Settings (`.env.local`)
 
@@ -104,14 +110,14 @@ daily. `logs/` holds the daily run log.
 | `MAX_EMAILS_PER_RUN`                                                                    | Cap on automatic emails per run. Default 10.                               |
 | `CRON_SECRET`                                                                           | Protects `/api/run`.                                                       |
 | `DASHBOARD_USER`, `DASHBOARD_PASSWORD`                                                  | Switch on the dashboard login.                                             |
-| `ALLOW_CLEAR`                                                                           | Enables Clear all. Keep false on the VPS.                                  |
+| `ALLOW_CLEAR`                                                                           | Enables Clear all. Keep false anywhere but your PC.                        |
 
 ## Setup on your PC
 
 ```bash
-pnpm install
+npm install
 cp .env.local.example .env.local     # then fill it in
-pnpm dev                             # open http://localhost:3000
+npm run dev                          # open http://localhost:3000
 ```
 
 Google setup: create a Google Cloud project, enable the Sheets and Drive APIs,
@@ -136,20 +142,49 @@ node scripts/check-companies.mjs --fix           # remove dead names
 node scripts/check-companies.mjs --add=greenhouse:dropbox,ashby:retool
 ```
 
-Restart `pnpm dev` after changing the list, because the fetchers read it at startup.
+Restart `npm run dev` after changing the list, because the fetchers read it at startup.
 
-## Putting it on the VPS
+## Daily run on GitHub Actions
 
-1. Install Node 20 and pnpm, upload the project, run `pnpm install` and
-   `pnpm build`.
-2. Fill in `.env.local` with Linux paths. Set `ALLOW_CLEAR=false` and set a
-   dashboard login.
-3. Start it with PM2: `pm2 start "pnpm start" --name job-pipeline`, then
-   `pm2 save` and `pm2 startup`.
-4. Fix Windows line endings in the scripts, then install the daily job:
-   `sed -i 's/\r$//' cron/*.sh && chmod +x cron/*.sh && ./cron/setup_cron.sh`.
-5. Block everything except SSH with the firewall and reach the dashboard
-   through an SSH tunnel: `ssh -L 3000:localhost:3000 user@your-vps-ip`.
+`.github/workflows/daily-pipeline.yml` runs the pipeline at 12:00 UTC
+(7am Toronto in winter, 8am in summer). One-time setup:
+
+1. In the fork, open the **Actions** tab and click **I understand my
+   workflows, go ahead and enable them**. Scheduled workflows stay off in a
+   fork until you do this.
+2. Add these under **Settings > Secrets and variables > Actions > Secrets**:
+
+   | Secret                        | Value                                              |
+   | ----------------------------- | -------------------------------------------------- |
+   | `GOOGLE_SERVICE_ACCOUNT_JSON` | The whole service account key file, as one line.   |
+   | `GOOGLE_SPREADSHEET_ID`       | The ID from your sheet's URL.                      |
+   | `SMTP_EMAIL`                  | The Gmail address that sends the digest.           |
+   | `SMTP_APP_PASSWORD`           | A Gmail App Password (not your login password).    |
+   | `DIGEST_RECIPIENT_EMAIL`      | Where the digest goes.                             |
+
+   Or from a terminal (`gh` logged in, run in the repo folder):
+
+   ```bash
+   gh secret set GOOGLE_SERVICE_ACCOUNT_JSON < credentials/keys.json
+   gh secret set GOOGLE_SPREADSHEET_ID
+   gh secret set SMTP_EMAIL
+   gh secret set SMTP_APP_PASSWORD
+   gh secret set DIGEST_RECIPIENT_EMAIL
+   ```
+
+3. Optional **Variables** (same page, Variables tab): `GOOGLE_SHEET_TAB`,
+   `MINIMUM_MATCH_SCORE`, `AUTO_APPROVE_MIN_SCORE`, `REQUIRE_REMOTE`,
+   `SMTP_SERVER`, `SMTP_PORT`. Defaults match `.env.local.example`.
+4. Test it: **Actions > Daily pipeline > Run workflow**, or
+   `gh workflow run daily-pipeline.yml`. The log is in the run page.
+
+The Actions run never sends an application email: your CVs are not in the
+public repo. Click **Approve** on email jobs in your local dashboard and they
+are sent from your PC at once. A job still marked Approved when the daily run
+starts (because a send failed) moves to Needs Manual Apply.
+
+GitHub pauses scheduled workflows in a public repo after 60 days without a
+commit. If the digest stops, re-enable the workflow on the Actions tab.
 
 ## Security
 
@@ -179,8 +214,8 @@ Restart `pnpm dev` after changing the list, because the fetchers read it at star
 1. Watch a few real runs and tune the word lists in `lib/scorer.js` and
    `MINIMUM_MATCH_SCORE`.
 2. Run `check-companies.mjs` every month and add companies from your target list.
-3. Deploy to the VPS (section above).
+3. Finish the GitHub Actions setup (section above).
 4. Build the LinkedIn alert-email reader.
 5. Build an assisted-apply script if submitting forms takes too long.
-6. More sources: NaukriGulf for UAE and Qatar, StepStone for Germany.
-7. Revisit `config/countries.json` every few months. Salaries change.
+6. More Canadian sources: Job Bank, Indeed Canada alerts.
+7. Add Canadian employers to `config/companies.json` as you find them.

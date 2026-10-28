@@ -1,0 +1,52 @@
+# Runs the job pipeline every morning: fetch -> filter -> score -> Google
+# Sheet -> follow-up reminders -> daily digest email. Replaces the old VPS
+# cron job. Settings come from repository secrets and variables
+# (Settings > Secrets and variables > Actions); see README "Daily run on
+# GitHub Actions".
+#
+# CV PDFs are git-ignored (the repo is public), so this run never sends an
+# application email itself: rows you Approve in the local dashboard are sent
+# from your machine. Anything left Approved is moved to Needs Manual Apply.
+name: Daily pipeline
+
+on:
+  schedule:
+    # 12:00 UTC = 7:00 Toronto (EST) / 8:00 (EDT). GitHub may start it a few
+    # minutes late.
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: daily-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: node --test "tests/*.test.mjs"
+      - name: Run pipeline
+        run: node scripts/run-pipeline.mjs
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.GOOGLE_SPREADSHEET_ID }}
+          GOOGLE_SHEET_TAB: ${{ vars.GOOGLE_SHEET_TAB || 'Sheet1' }}
+          SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+          SMTP_SERVER: ${{ vars.SMTP_SERVER || 'smtp.gmail.com' }}
+          SMTP_PORT: ${{ vars.SMTP_PORT || '587' }}
+          DIGEST_RECIPIENT_EMAIL: ${{ secrets.DIGEST_RECIPIENT_EMAIL }}
+          MINIMUM_MATCH_SCORE: ${{ vars.MINIMUM_MATCH_SCORE || '55' }}
+          AUTO_APPROVE_MIN_SCORE: ${{ vars.AUTO_APPROVE_MIN_SCORE || '80' }}
+          REQUIRE_REMOTE: ${{ vars.REQUIRE_REMOTE || 'false' }}
+          AUTO_SEND_EMAILS: "false"

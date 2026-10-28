@@ -1,20 +1,25 @@
 {
-  "_comment": "Countries where mid-level developer pay, converted to USD, clears $28,000/year ($2,333/month). Static, manually researched list, not a live feed. Review every few months. A posting with no specific country requirement ('Remote, Worldwide') always passes regardless of this list.",
-  "monthly_floor_usd": 2333,
-  "annual_floor_usd": 28000,
-  "eligible_countries": [
-    "United States", "Switzerland", "Singapore", "Australia", "Israel",
-    "United Arab Emirates", "Canada", "Denmark", "Netherlands", "Germany",
-    "Qatar", "Japan", "Norway", "United Kingdom", "Sweden", "South Korea",
-    "Spain", "China", "Portugal", "Argentina", "Romania", "Poland",
-    "Malaysia", "Brazil", "Vietnam", "Mexico", "South Africa", "Bulgaria",
-    "Ukraine"
-  ],
-  "excluded_with_reason": {
-    "Russia": "Clears the salary floor but most sources this system pulls from don't process hires or payments there due to sanctions.",
-    "India": "Only MNC/FAANG-adjacent roles clear the floor; typical local pay is well under it, and job data doesn't label 'MNC vs local' cleanly.",
-    "Nigeria": "Local pay is well under the floor. Not a target market for local-currency roles.",
-    "Philippines": "Typical pay is well under the floor."
+  "_comment": "Where you can work. Based in Canada: Canadian jobs pass whether remote, hybrid or onsite, and get a score boost. US jobs pass only when remote, and are flagged so you check work authorization. Remote jobs open worldwide or to North America pass. Jobs tied to any other country or region are dropped. Matching is case-insensitive whole-word text matching; see lib/filters.js.",
+
+  "priority_country": "Canada",
+  "priority_score_boost": 10,
+
+  "onsite_ok": ["Canada"],
+  "remote_ok": ["Canada", "United States"],
+
+  "place_aliases": {
+    "canada": ["canada", "toronto", "vancouver", "montreal", "montréal", "ottawa", "calgary", "edmonton", "waterloo", "kitchener", "mississauga", "markham", "winnipeg", "halifax", "victoria, bc", "quebec", "québec", "ontario", "british columbia", "alberta", "manitoba", "saskatchewan", "nova scotia", "new brunswick", "gta"],
+    "united states": ["united states", "usa", "u.s.a.", "us", "u.s."]
   },
-  "notes": "Edit eligible_countries to add/remove a country. Matching is case-insensitive substring matching, see lib/filters.js SYNONYMS for abbreviation handling (UK, US, UAE, Dubai, etc)."
+
+  "open_regions": ["worldwide", "anywhere", "global", "north america", "americas", "amer", "us or canada", "us/canada"],
+
+  "excluded_places": [
+    "europe", "emea", "eu", "uk", "united kingdom", "ireland", "germany", "france", "netherlands", "spain", "portugal", "poland", "romania", "italy", "sweden", "norway", "denmark", "switzerland", "austria", "belgium", "bulgaria", "ukraine",
+    "apac", "asia", "india", "singapore", "japan", "australia", "new zealand", "philippines", "vietnam", "malaysia", "china", "south korea", "israel",
+    "latam", "latin america", "south america", "mexico", "brazil", "argentina", "colombia", "chile",
+    "africa", "nigeria", "south africa", "kenya", "egypt", "middle east", "uae", "dubai", "qatar", "saudi arabia"
+  ],
+
+  "notes": "A location naming Canada or the US is judged by the rules above even if it also names other places ('Europe, USA, Canada' passes). Add a city to place_aliases.canada if a Canadian posting slips through."
 }

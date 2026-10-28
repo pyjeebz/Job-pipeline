@@ -15,7 +15,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "Job Pipeline",
-  description: "Daniel's job application tracker",
+  description: "Mujeeb's job application tracker",
 };
 
 export default function RootLayout({ children }) {

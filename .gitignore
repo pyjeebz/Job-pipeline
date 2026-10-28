@@ -23,3 +23,5 @@ znotes.md
 .DS_Store
 Thumbs.db
 znotes.md
+# CVs: personal, kept out of the public repo
+resumes/*.pdf

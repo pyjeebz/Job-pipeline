@@ -1,98 +1,99 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  isLocationEligible,
-  isLocationRestricted,
+  checkJobLocation,
   isRemoteJob,
   filterJobs,
   deduplicate,
 } from "../lib/filters.js";
 
-test("countries on your list are accepted, abbreviations included", () => {
-  for (const place of [
-    "Berlin, Germany",
-    "Dubai, UAE",
-    "UK",
-    "Remote - USA",
-    "Singapore",
-  ]) {
-    assert.equal(isLocationEligible(place).ok, true, place);
-  }
+// A company career-page job (not a remote-only board).
+const onsite = (location, extra = {}) => ({
+  source: "greenhouse",
+  title: "Backend Engineer",
+  description: "",
+  location,
+  ...extra,
 });
+const ok = (job) => checkJobLocation(job).ok;
 
-test("countries below your pay floor are rejected", () => {
+test("Canadian jobs pass whether remote or onsite", () => {
   for (const place of [
-    "Lagos, Nigeria",
-    "Mumbai, India",
-    "Manila, Philippines",
-  ]) {
-    assert.equal(isLocationEligible(place).ok, false, place);
-  }
-});
-
-test("remote and worldwide jobs are accepted, and so is a blank location", () => {
-  for (const place of ["Remote", "Worldwide", "Remote, EMEA", "Anywhere", ""]) {
-    assert.equal(isLocationEligible(place).ok, true, place || "(blank)");
-  }
-});
-
-test("jobs tied to specific countries or regions are flagged, open ones are not", () => {
-  for (const place of [
-    "Remote - USA",
-    "Remote, AMER",
+    "Toronto, ON",
+    "Vancouver, British Columbia",
+    "Montréal, Québec",
     "Remote - Canada",
-    "Remote - UK",
+    "Waterloo, Ontario, Canada",
+    "Toronto or New York",
   ]) {
-    assert.equal(isLocationRestricted(place), true, place);
+    assert.equal(ok(onsite(place)), true, place);
   }
+});
+
+test("US jobs pass only when remote", () => {
+  assert.equal(ok(onsite("Remote - USA")), true);
+  assert.equal(ok(onsite("United States", { source: "remotive" })), true);
+  assert.equal(
+    ok(onsite("US", { description: "This is a fully remote role." })),
+    true,
+  );
+  assert.equal(ok(onsite("New York, United States")), false);
+  assert.equal(ok(onsite("San Francisco, CA")), false);
+});
+
+test("remote jobs open worldwide or to North America pass", () => {
+  for (const place of ["Remote", "Worldwide", "Anywhere", "Remote, AMER", "North America", ""]) {
+    assert.equal(ok(onsite(place)), true, place || "(blank)");
+  }
+});
+
+test("jobs tied to other countries or regions are dropped", () => {
   for (const place of [
-    "Remote",
     "Remote, EMEA",
-    "Remote, Global",
-    "Worldwide",
+    "Remote - Europe",
+    "Berlin, Germany",
+    "London, UK",
+    "Lagos, Nigeria",
+    "Remote - Latin America",
+    "APAC",
   ]) {
-    assert.equal(isLocationRestricted(place), false, place);
+    assert.equal(ok(onsite(place)), false, place);
   }
+});
+
+test("a location listing Canada among other places passes", () => {
+  assert.equal(ok(onsite("Europe, USA, Canada, APAC", { source: "remotive" })), true);
+});
+
+test("'us' must match whole: 'Austin' and 'business' do not mean the US", () => {
+  assert.equal(ok(onsite("Austin")), false);
 });
 
 test("remote-only boards are always remote, even with just a country name", () => {
   assert.equal(
-    isRemoteJob({
-      source: "himalayas",
-      location: "United States",
-      title: "Dev",
-    }),
+    isRemoteJob({ source: "himalayas", location: "United States", title: "Dev" }),
     true,
   );
+  assert.equal(isRemoteJob(onsite("Berlin, Germany")), false);
   assert.equal(
-    isRemoteJob({
-      source: "greenhouse",
-      location: "Berlin, Germany",
-      title: "Dev",
-      description: "",
-    }),
-    false,
-  );
-  assert.equal(
-    isRemoteJob({
-      source: "greenhouse",
-      location: "",
-      title: "Dev",
-      description: "This is a fully remote role.",
-    }),
+    isRemoteJob(onsite("", { description: "This is a fully remote role." })),
     true,
   );
 });
 
-test("filterJobs drops ineligible countries and adds the restricted flag", () => {
+test("filterJobs boosts Canada and flags US-only jobs", () => {
   const out = filterJobs([
-    { source: "ashby", title: "Dev", location: "Remote - USA" },
-    { source: "ashby", title: "Dev", location: "Lagos, Nigeria" },
-    { source: "ashby", title: "Dev", location: "Remote, EMEA" },
+    onsite("Toronto, ON"),
+    onsite("Remote - USA"),
+    onsite("Remote"),
+    onsite("Remote, EMEA"),
   ]);
-  assert.equal(out.length, 2);
-  assert.equal(out[0].locationRestricted, true);
-  assert.equal(out[1].locationRestricted, false);
+  assert.equal(out.length, 3);
+  assert.equal(out[0].inPriorityCountry, true);
+  assert.ok(out[0].locationBonus > 0);
+  assert.equal(out[1].locationRestricted, true);
+  assert.equal(out[1].locationBonus, 0);
+  assert.equal(out[2].locationRestricted, false);
 });
 
 test("deduplicate removes known links, repeats and jobs with no link", () => {

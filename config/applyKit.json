@@ -1,44 +1,44 @@
 {
-  "_comment": "Everything the dashboard's Apply kit lets you copy. Edit any value, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders: replace them with your real answer. Your phone number is left out on purpose; add one {label, value} line to profile if you want it.",
+  "_comment": "Everything the dashboard's Apply kit lets you copy. Edit any value, save, and refresh the dashboard (no restart needed). Lines starting with EDIT ME are placeholders: replace them with your real answer. The summaries are also used in application emails (an EDIT ME summary is left out of the email). This repo is public: anything you put here is visible to anyone, so keep salary numbers and your phone number out of commits.",
 
   "profile": [
-    { "label": "Full name", "value": "Daniel Chimezie" },
-    { "label": "Email", "value": "dannydotdev@gmail.com" },
-    { "label": "LinkedIn", "value": "https://linkedin.com/in/0xdaniiel2" },
-    { "label": "GitHub", "value": "https://github.com/0xDaniiel" },
-    { "label": "Portfolio", "value": "https://0xdaniiel.space" }
+    { "label": "Full name", "value": "Mujeeb Lawal-Saka" },
+    { "label": "Email", "value": "EDIT ME: your email" },
+    { "label": "LinkedIn", "value": "https://www.linkedin.com/in/mujeeb-lawal-saka/" },
+    { "label": "GitHub", "value": "https://github.com/pyjeebz" },
+    { "label": "Portfolio", "value": "https://pyjeebz.com" }
   ],
 
   "answers": [
     {
       "label": "Where are you based?",
-      "value": "Nigeria (UTC+1). I work remotely."
+      "value": "EDIT ME: city, province, Canada (time zone). Open to remote, hybrid or onsite in Canada, and remote roles in the US."
     },
     {
-      "label": "Work authorization / how you work",
-      "value": "I am based in Nigeria and work as an independent contractor (B2B). I can invoice through Wise, Payoneer or Deel."
+      "label": "Work authorization",
+      "value": "EDIT ME: e.g. Canadian citizen / permanent resident / work permit. For US roles: whether you need sponsorship or can work as a contractor."
     },
     {
       "label": "Availability / start date",
-      "value": "Immediately"
+      "value": "EDIT ME: e.g. Immediately / two weeks' notice"
     },
     {
       "label": "Salary expectation",
-      "value": "$2500/month."
+      "value": "EDIT ME: a range in CAD or USD"
     },
     {
       "label": "Years of experience",
-      "value": "5+ years building production web and mobile products with React, TypeScript, Next.js and React Native."
+      "value": "EDIT ME: e.g. N years building backend services and cloud infrastructure with Python, AWS and Kubernetes."
     },
     {
       "label": "Full-time or contract?",
-      "value": "Open to both full-time and long-term contract roles."
+      "value": "EDIT ME: e.g. Open to both full-time and long-term contract roles."
     }
   ],
 
   "summaries": {
-    "frontend_engineer": "Frontend Software Engineer with 5+ years of experience building production web applications in React, TypeScript, and Next.js. Delivered measurable performance gains of 25 to 60 percent faster load times, shipped internationalized (i18n) products for European clients, and built pixel accurate interfaces across marketplace, real estate, and fintech adjacent platforms.",
-    "react_native": "Mobile Application Developer with 5+ years of frontend experience, including 2+ years building production React Native (Expo) apps end to end, from concept to App Store and Google Play release. Shipped real time chat, wallet, and KYC flows for a fintech adjacent hiring marketplace and took a productivity app to both app stores.",
-    "product_engineer": "Product minded Software Engineer with 5+ years shipping web and mobile products end to end, from idea to release to paying users. Founded a web development agency, took a productivity app to both app stores, and built a lead generation tool now used by 13K+ people."
+    "devops_cloud": "EDIT ME: 2-3 sentences for DevOps / Cloud / SRE roles (AWS, Kubernetes, Terraform, CI/CD, results you can measure).",
+    "backend": "EDIT ME: 2-3 sentences for Backend / Python roles (services and APIs you built, scale, stack).",
+    "fullstack": "EDIT ME: 2-3 sentences for full-stack and general software engineer roles."
   }
 }

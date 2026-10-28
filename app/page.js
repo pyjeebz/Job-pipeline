@@ -15,12 +15,6 @@ const STATUS_COLOR = {
   "Follow-up Sent": "var(--status-approved)",
 };
 
-const CV_LABEL = {
-  frontend_engineer: "Frontend CV",
-  react_native: "React Native CV",
-  product_engineer: "Product CV",
-};
-
 const TABS = [
   { key: "all", label: "All", match: () => true },
   {
@@ -54,7 +48,10 @@ function applyEmailOf(job) {
 }
 
 function KitPanel({ job, kit, copied, onCopy }) {
-  const cvKey = job["CV Version Used"] || "frontend_engineer";
+  const labels = kit.cvLabels || {};
+  const cvKey = labels[job["CV Version Used"]]
+    ? job["CV Version Used"]
+    : kit.defaultCv;
   const summary = kit.summaries ? kit.summaries[cvKey] : null;
   const summaryKey = `${job._row}-summary`;
 
@@ -96,7 +93,7 @@ function KitPanel({ job, kit, copied, onCopy }) {
       {summary && (
         <>
           <div className="kitTitle">
-            Short summary ({CV_LABEL[cvKey] || "CV"})
+            Short summary ({labels[cvKey] || "CV"})
           </div>
           <div className="answerRow">
             <div className="answerText">
@@ -114,7 +111,7 @@ function KitPanel({ job, kit, copied, onCopy }) {
 
       <div className="kitLinks">
         <a className="actionBtn primary" href={`/api/resume?cv=${cvKey}`}>
-          Download {CV_LABEL[cvKey] || "CV"}
+          Download {labels[cvKey] || "CV"}
         </a>
         <a
           className="actionBtn"
@@ -249,7 +246,7 @@ export default function Dashboard() {
       <div className="pageHead">
         <div>
           <h1 className="wordmark">Job Pipeline</h1>
-          <div className="tagline">Daniel&rsquo;s application tracker</div>
+          <div className="tagline">Mujeeb&rsquo;s application tracker</div>
         </div>
         <div className="headActions">
           <button className="ghostBtn" onClick={loadJobs}>
@@ -342,7 +339,7 @@ export default function Dashboard() {
                     )}
                     {job["CV Version Used"] && (
                       <span className="cvTag">
-                        {CV_LABEL[job["CV Version Used"]] ||
+                        {kit?.cvLabels?.[job["CV Version Used"]] ||
                           job["CV Version Used"]}
                       </span>
                     )}

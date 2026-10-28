@@ -6,7 +6,7 @@ const nextConfig = {
   experimental: {
     outputFileTracingIncludes: {
       "/api/resume": ["./resumes/**/*"],
-      "/api/approve": ["./resumes/**/*"],
+      "/api/approve": ["./resumes/**/*", "./config/applyKit.json"],
       "/api/kit": ["./config/applyKit.json"],
     },
   },

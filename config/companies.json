@@ -22,7 +22,16 @@
     "lyft",
     "webflow",
     "okta",
-    "duolingo"
+    "duolingo",
+    "faire",
+    "d2l",
+    "tailscale",
+    "grafanalabs",
+    "elastic",
+    "pagerduty",
+    "digitalocean98",
+    "cockroachlabs",
+    "fastly"
   ],
   "_greenhouse_howto": "URL: boards.greenhouse.io/{slug}. API: https://boards-api.greenhouse.io/v1/boards/{slug}/jobs",
   "lever": [
@@ -41,7 +50,16 @@
     "posthog",
     "deel",
     "openai",
-    "clickhouse"
+    "clickhouse",
+    "wealthsimple",
+    "cohere",
+    "1password",
+    "koho",
+    "jobber",
+    "benevity",
+    "sentry",
+    "render",
+    "temporal"
   ],
   "_ashby_howto": "URL: jobs.ashbyhq.com/{slug}. API: https://api.ashbyhq.com/posting-api/job-board/{slug}",
   "bamboohr": [],
