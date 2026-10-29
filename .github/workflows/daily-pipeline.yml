@@ -46,3 +46,18 @@ jobs:
           MINIMUM_MATCH_SCORE: ${{ vars.MINIMUM_MATCH_SCORE || '55' }}
           AUTO_APPROVE_MIN_SCORE: ${{ vars.AUTO_APPROVE_MIN_SCORE || '80' }}
           REQUIRE_REMOTE: ${{ vars.REQUIRE_REMOTE || 'false' }}
+
+  # GitHub turns off scheduled workflows in a public repo after 60 days
+  # without a commit, and this pipeline never commits. Re-enabling the
+  # workflow through the API resets that timer, so the schedule never lapses.
+  # Separate job: it runs even when the pipeline job fails.
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Reset the inactivity timer
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/daily-pipeline.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}

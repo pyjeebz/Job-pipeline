@@ -185,7 +185,8 @@ Each run adds up to 50 new jobs. One-time setup:
    `gh workflow run daily-pipeline.yml`. The log is in the run page.
 
 GitHub pauses scheduled workflows in a public repo after 60 days without a
-commit. If the digest stops, re-enable the workflow on the Actions tab.
+commit. The workflow's `keepalive` job re-enables itself on every run, which
+resets that timer, so the schedule keeps going without any commits.
 
 ## Security
 
